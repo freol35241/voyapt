@@ -6,8 +6,7 @@ from nvector import GeoPoint, GeoPath, great_circle_distance
 def points_equal(pt1: GeoPoint, pt2: GeoPoint) -> bool:
     return pt1.latlon == pt2.latlon
 
-def legs(points: List[GeoPoint]) -> Generator[GeoPath]:
-
+def legs(points: List[GeoPoint]) -> Generator[GeoPath, None, None]:
     for first, second in zip(points[:-1], points[1:]):
         yield GeoPath(first, second)
 
@@ -30,6 +29,17 @@ def split(leg: GeoPath, n: int=10) -> List[GeoPoint]:
 def track_distance(points: List[GeoPoint]) -> float:
     return sum(leg.track_distance() for leg in legs(points))
 
-def merge(points1: List[GeoPoint], points2: List[GeoPoint]) -> List[GeoPoint]:
-    assert points_equal(points1[-1], points2[0]), "Last point in first list and first point in second list must be equal!"
-    return points1 + points2[1:]
+def merge(*points: List[GeoPoint]) -> List[GeoPoint]:
+    assert len(points) >= 1
+    out = []
+    for pts in points:
+        if out:
+            assert points_equal(out[-1], pts[0]), "Mismatch in last and first point in consecutive list of points!"
+            out += pts[1:]
+        else:
+            out += pts
+
+    return out
+
+
+from voyapt import weather
