@@ -1,3 +1,6 @@
 black
 pylint
 pytest
+pytest-pinned
+-r examples/requirements.txt
+-e .

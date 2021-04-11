@@ -1,5 +1,5 @@
-nvector
-numpy
+nvector >= 0.7.6
+geographiclib
 xarray
 netCDF4
 dask[complete]
@@ -7,3 +7,4 @@ cdsapi
 matplotlib
 seaborn
 scipy
+geojson
