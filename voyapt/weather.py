@@ -3,7 +3,7 @@ from typing import Sequence
 import numpy as np
 import xarray as xr
 
-from voyapt import WayPoint, Route, track_distance
+from voyapt import Waypoint, Route, track_distance
 
 
 def temporal_sampling(

@@ -3,19 +3,14 @@ import pytest
 from geojson import Point, LineString, FeatureCollection
 
 from voyapt import Waypoint, Leg, Route
-from voyapt.geojson import to_geojson
-
-
-def test_to_geojson_unknown_type():
-    with pytest.raises(RuntimeError):
-        to_geojson(4)
+from voyapt.geojson import waypoint_to_geojson, leg_to_geojson, route_to_geojson
 
 
 def test_properties():
     wp = Waypoint(latitude=56, longitude=11, degrees=True)
     props = {"a": 1, "b": 2}
 
-    feat = to_geojson(wp, properties=props)
+    feat = waypoint_to_geojson(wp, properties=props)
 
     assert len(props.keys()) == 2
     assert props.items() <= feat["properties"].items()
@@ -24,7 +19,7 @@ def test_properties():
 def test_to_geojson_waypoint():
     wp = Waypoint(latitude=56, longitude=11, degrees=True)
 
-    feat = to_geojson(wp)
+    feat = waypoint_to_geojson(wp)
     pt = feat["geometry"]
 
     assert feat["properties"]["voyapt_type"] == "Waypoint"
@@ -37,7 +32,7 @@ def test_to_geojson_leg():
     wp2 = Waypoint(latitude=57, longitude=12, degrees=True)
     leg = Leg(wp1, wp2)
 
-    feat = to_geojson(leg)
+    feat = leg_to_geojson(leg)
     linestring = feat["geometry"]
 
     assert feat["properties"]["voyapt_type"] == "Leg"
@@ -57,7 +52,7 @@ def test_to_geojson_route():
     wp3 = Waypoint(latitude=58, longitude=13, degrees=True)
     route = [wp1, wp2, wp3]
 
-    collection = to_geojson(route)
+    collection = route_to_geojson(route)
 
     assert isinstance(collection, FeatureCollection)
     assert collection["voyapt_type"] == "Route"
