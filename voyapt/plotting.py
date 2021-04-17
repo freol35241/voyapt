@@ -4,10 +4,10 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 
-from seaborn import jointplot_raw
+from seaborn import jointplot
 
 
-def jointplot_binned(probabilities, x_labels, y_labels, **kwargs):
+def pmf_plot(probabilities, x_labels, y_labels, **kwargs):
     im = heatmap(probabilities * 100, x_labels, y_labels)
     texts = annotate_heatmap(im)
     return im, texts

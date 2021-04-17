@@ -10,7 +10,7 @@ def get_bin_midpoints(bin_edges):
 
 
 @wraps(np.histogramdd)
-def joint_probability_density_function(*args, **kwargs):
+def probability_density_function(*args, **kwargs):
     if not kwargs.get("density", True) or not kwargs.get("normed", True):
         raise ValueError(
             "Not possible to calculate probability density function when"
@@ -21,14 +21,34 @@ def joint_probability_density_function(*args, **kwargs):
 
 
 @wraps(np.histogramdd)
-def joint_probability_mass_function(*args, **kwargs):
+def probability_mass_function(*args, **kwargs):
     if kwargs.get("density") or kwargs.get("normed"):
         raise ValueError(
             "Not possible to calculate probability mass function when"
             " 'density' or 'normed' is set to True"
         )
     hist, edges = np.histogramdd(*args, **kwargs)
-    return hist / hist.sum(), edges
+    return hist / hist.sum(), [get_bin_midpoints(bins) for bins in edges], edges
+
+
+def pmf_reduce_to_univariate(pmf: np.ndarray, coords: np.ndarray, reducer: Callable):
+    assert pmf.shape == tuple(
+        [len(crds) for crds in coords]
+    ), "Dimensions of pmf and provided coords must agree!"
+
+    indices = np.array(list(np.ndindex(pmf.shape)))
+    combos = np.array([pts[ixs] for pts, ixs in zip(coords, indices.T)]).T
+
+    pts: np.ndarray = reducer(combos)
+
+    pmf = pmf.flatten()
+
+    assert len(pmf) == len(
+        pts
+    ), "Reducer function did not return data in proper format!"
+
+    sorted_ixs = pts.argsort()
+    return pmf[sorted_ixs], pts[sorted_ixs]
 
 
 def monte_carlo(
