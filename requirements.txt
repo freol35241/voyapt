@@ -3,7 +3,6 @@ geographiclib
 xarray
 netCDF4
 dask[complete]
-cdsapi
 matplotlib
 seaborn
 scipy
