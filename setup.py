@@ -9,12 +9,12 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
     
 # Parse the requirements-txt file and use for install_requires in pip
-with open('requirements.txt') as f:
+with open("requirements.txt") as f:
     required = f.read().splitlines()
 
 setup(
     name = "voyapt",
-    version = "0.1.0",
+    version = "0.1.0.dev0",
     author = "Fredrik Olsson",
     author_email='freol@outlook.com',
     maintainer='Fredrik Olsson',

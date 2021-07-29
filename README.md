@@ -7,10 +7,9 @@ High-level concepts:
 * A `Route` is a collection of minimum two `Waypoint`s. `Leg`s may be extracted from a `Route`.
 
 ### Installation
+`voyapt` is available on **pypi**:
 
-So far:
-* Clone repo
-* Run `pip install path/to/repo/root`
+```pip install voyapt```
 
 ### Examples
 

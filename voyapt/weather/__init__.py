@@ -11,7 +11,7 @@ def angle_difference(
 
 def apparent_to_true_wind(
     wind_speed: Union[float, np.ndarray],
-    wind_direction: Union[float, np.ndarray],
+    wind_angle: Union[float, np.ndarray],
     ship_speed: float,
     ship_heading: float,
 ):

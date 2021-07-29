@@ -1,3 +1,5 @@
+from collections import Counter
+
 import pytest
 import numpy as np
 
@@ -74,7 +76,12 @@ def test_monte_carlo_probs():
     rng = np.random.default_rng()
     samples = rng.uniform(size=10)
 
-    draws = monte_carlo(samples, probabilities=samples)
+    probs = samples / samples.sum()
+
+    draws = monte_carlo(samples, probabilities=probs)
 
     assert len(draws) == 1e6
     assert set(draws) == set(samples)
+    c = Counter(draws)
+    for sample, prob in zip(samples, probs):
+        assert c[sample] / 1e6 == pytest.approx(prob, rel=1e5)
